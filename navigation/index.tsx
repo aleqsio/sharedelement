@@ -9,6 +9,7 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
+import { ReanimatedScreenProvider } from 'react-native-screens/reanimated';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -23,8 +24,11 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    >
+      <ReanimatedScreenProvider>
       <RootNavigator />
+      </ReanimatedScreenProvider >
     </NavigationContainer>
   );
 }
@@ -37,12 +41,21 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
+    <Stack.Navigator
+      defaultScreenOptions={{
+        gestureEnabled: true,
+      }}
+    >
+      <Stack.Screen
+        name="Root"
+        options={{ title: "List" }}
+        component={BottomTabNavigator}
+      />
+      <Stack.Screen
+        name="Detail"
+        options={{ title: "Detail" }}
+        component={NotFoundScreen}
+      />
     </Stack.Navigator>
   );
 }

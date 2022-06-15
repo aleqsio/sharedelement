@@ -1,15 +1,30 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useReanimatedTransitionProgress } from 'react-native-screens/reanimated';
 
 import { Text, View } from '../components/Themed';
+import { SharedElement } from '../SharedElement';
 import { RootStackScreenProps } from '../types';
 
-export default function NotFoundScreen({ navigation }: RootStackScreenProps<'NotFound'>) {
+export default function NotFoundScreen({ navigation, route }: RootStackScreenProps<'Details'>) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>This screen doesn't exist.</Text>
-      <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
-        <Text style={styles.linkText}>Go to home screen!</Text>
-      </TouchableOpacity>
+      <SharedElement
+        style={{ height: 400, width: "100%" }}
+        sharedId={`shared${route.params.index}`}
+      >
+        <Image
+          style={{
+            flex: 1,
+          }}
+          source={{
+            uri: `https://picsum.photos/id/${
+              route.params.index + 1010
+            }/500/500`,
+          }}
+        />
+      </SharedElement>
+      <Text style={styles.title}>This is a detail screen.</Text>
     </View>
   );
 }
@@ -17,13 +32,11 @@ export default function NotFoundScreen({ navigation }: RootStackScreenProps<'Not
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    padding:20
   },
   link: {
     marginTop: 15,
